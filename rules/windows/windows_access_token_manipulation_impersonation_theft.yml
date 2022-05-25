@@ -1,0 +1,20 @@
+title: Detect Access Token Manipulation Token Impersonation and Theft
+status: experimental
+description: This analytic detects the use of Access Token Manipulation, specifically token impersonation and theft. This analytic detects the use of DuplicateToken(Ex) and ImpersonateLoggedOnUser with the LOGON32_LOGON_NEW_CREDENTIALS flag to prevent adversaries and tools from impersonating tokens.
+author: Michaela Adams
+reference: https://attack.mitre.org/techniques/T1134/001/
+date: 2022/04/28
+logsource:
+  product: windows
+  category: logon_event
+detection:
+  selection:
+    - EventCode: 4624
+    - ImpersonationLevel: 'Impersonation'
+    - AuthenticationPackage: 'Negotiate'
+    - LogonType: '9'
+    - LogonProcess: 'Advapi'
+    - ElevatedToken: 'No'
+falsepositives:
+  - Antivirus
+level: Medium
